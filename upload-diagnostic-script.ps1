@@ -4,12 +4,12 @@
 $ErrorActionPreference = "Stop"
 
 # Set AWS credentials
-$env:AWS_ACCESS_KEY_ID = "AKIA2J5G226RAWICGZAR"
-$env:AWS_SECRET_ACCESS_KEY = "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"
-$env:AWS_DEFAULT_REGION = "us-east-1"
+$env:AWS_ACCESS_KEY_ID = ""
+$env:AWS_SECRET_ACCESS_KEY = ""
+$env:AWS_DEFAULT_REGION = ""
 
-$S3_BUCKET = "agrinext-images-1772367775698"
-$SCRIPT_FILE = "diagnose-ec2-rds.sh"
+$S3_BUCKET = ""
+$SCRIPT_FILE = ""
 
 Write-Host "📤 Uploading diagnostic script to S3..." -ForegroundColor Cyan
 
