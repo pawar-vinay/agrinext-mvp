@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinext MVP - Flow Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .nav {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .nav-button {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .nav-button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .content { padding: 40px; }
+        .diagram-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .diagram-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Agrinext MVP</h1>
+            <p>Flow Diagrams & System Architecture</p>
+        </div>
+        
+        <div class="nav">
+            <div class="nav-buttons">
+                <a href="#auth" class="nav-button">Authentication</a>
+                <a href="#disease" class="nav-button">Disease Detection</a>
+                <a href="#advisory" class="nav-button">Advisory</a>
+                <a href="#schemes" class="nav-button">Schemes</a>
+                <a href="#architecture" class="nav-button">Architecture</a>
+            </div>
+        </div>
+        
+        <div class="content">
+
+
+            <!-- Authentication Flow -->
+            <div id="auth" class="diagram-section">
+                <h2>1. User Registration & Authentication Flow</h2>
+                <div class="mermaid">
+flowchart TD
+    Start([User Opens App]) --> CheckAuth{Logged In?}
+    CheckAuth -->|Yes| Dashboard[Dashboard]
+    CheckAuth -->|No| RegScreen[Registration]
+    RegScreen --> EnterMobile[Enter Mobile]
+    EnterMobile --> SendOTP[Send OTP]
+    SendOTP --> EnterOTP[Enter OTP]
+    EnterOTP --> VerifyOTP{Verify OTP}
+    VerifyOTP -->|Invalid| EnterOTP
+    VerifyOTP -->|Valid| NewUser{New User?}
+    NewUser -->|Yes| ProfileForm[Create Profile]
+    ProfileForm --> SaveProfile[Save Profile]
+    NewUser -->|No| IssueToken[Issue Token]
+    SaveProfile --> IssueToken
+    IssueToken --> Dashboard
+    Dashboard --> End([Authenticated])
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style Dashboard fill:#fff4e1
+                </div>
+            </div>
+
+            <!-- Disease Detection Flow -->
+            <div id="disease" class="diagram-section">
+                <h2>2. Disease Detection Flow</h2>
+                <div class="mermaid">
+flowchart TD
+    Start([Disease Detection]) --> ChooseSource{Image Source}
+    ChooseSource -->|Camera| OpenCamera[Open Camera]
+    ChooseSource -->|Gallery| OpenGallery[Open Gallery]
+    OpenCamera --> CaptureImage[Capture Image]
+    OpenGallery --> SelectImage[Select Image]
+    CaptureImage --> ImagePreview[Preview]
+    SelectImage --> ImagePreview
+    ImagePreview --> ValidateQuality[Validate Quality]
+    ValidateQuality --> QualityCheck{Quality OK?}
+    QualityCheck -->|No| ChooseSource
+    QualityCheck -->|Yes| UploadImage[Upload Image]
+    UploadImage --> CallAPI[Call AI API]
+    CallAPI --> Processing[AI Processing]
+    Processing --> DisplayResults[Display Results]
+    DisplayResults --> ShowDisease[Show Disease]
+    ShowDisease --> ShowTreatment[Show Treatment]
+    ShowTreatment --> SaveHistory[Save History]
+    SaveHistory --> End([End])
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style DisplayResults fill:#fff4e1
+                </div>
+            </div>
+
+            <!-- Advisory Flow -->
+            <div id="advisory" class="diagram-section">
+                <h2>3. Agronomy Advisory Flow</h2>
+                <div class="mermaid">
+flowchart TD
+    Start([Advisory]) --> AdvisoryHome[Advisory Home]
+    AdvisoryHome --> TextInput[Type Question]
+    TextInput --> SubmitQuery[Submit Query]
+    SubmitQuery --> GatherContext[Gather Context]
+    GatherContext --> CallLLM[Call LLM API]
+    CallLLM --> LLMProcessing[AI Processing]
+    LLMProcessing --> TranslateResponse[Translate]
+    TranslateResponse --> DisplayAdvisory[Display Advisory]
+    DisplayAdvisory --> SaveToHistory[Save History]
+    SaveToHistory --> RatingPrompt{Rate?}
+    RatingPrompt -->|Yes| SaveRating[Save Rating]
+    RatingPrompt -->|No| End
+    SaveRating --> End([End])
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style DisplayAdvisory fill:#fff4e1
+                </div>
+            </div>
+
+            <!-- Schemes Flow -->
+            <div id="schemes" class="diagram-section">
+                <h2>4. Government Schemes Flow</h2>
+                <div class="mermaid">
+flowchart TD
+    Start([Schemes]) --> SchemeHome[Schemes Home]
+    SchemeHome --> ShowCategories[Show Categories]
+    ShowCategories --> SelectCategory[Select Category]
+    SelectCategory --> LoadSchemes[Load Schemes]
+    LoadSchemes --> DisplayList[Display List]
+    DisplayList --> SelectScheme{Select Scheme?}
+    SelectScheme -->|Yes| LoadDetails[Load Details]
+    SelectScheme -->|No| End
+    LoadDetails --> ShowDetails[Show Details]
+    ShowDetails --> CheckEligibility[Check Eligibility]
+    CheckEligibility --> EligibilityResult{Eligible?}
+    EligibilityResult -->|Yes| ShowEligible[Show Eligible]
+    EligibilityResult -->|No| ShowIneligible[Show Ineligible]
+    ShowEligible --> RedirectExternal[Redirect to Govt Portal]
+    ShowIneligible --> End
+    RedirectExternal --> End([End])
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style ShowEligible fill:#e1ffe1
+                </div>
+            </div>
+
+            <!-- Architecture -->
+            <div id="architecture" class="diagram-section">
+                <h2>5. System Architecture</h2>
+                <div class="mermaid">
+flowchart TB
+    subgraph Mobile["Mobile App"]
+        UI[User Interface]
+        LocalDB[Local Storage]
+    end
+    subgraph Backend["Backend Server"]
+        API[API Gateway]
+        Services[Services]
+    end
+    subgraph Database["Database"]
+        PostgreSQL[(PostgreSQL)]
+    end
+    subgraph External["External Services"]
+        LLM[LLM API]
+        DiseaseAI[Disease AI]
+        Weather[Weather API]
+    end
+    UI --> API
+    API --> Services
+    Services --> PostgreSQL
+    Services --> LLM
+    Services --> DiseaseAI
+    Services --> Weather
+    style UI fill:#e1f5e1
+    style API fill:#fff4e1
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Agrinext MVP - Agricultural Advisory Platform</strong></p>
+            <p>© 2026 Agrinext</p>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default'
+        });
+    </script>
+</body>
+</html>

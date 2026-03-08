@@ -1,0 +1,108 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "detection": "Detection",
+    "advisory": "Advisory",
+    "schemes": "Schemes",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Login",
+    "enterMobile": "Enter Mobile Number",
+    "sendOTP": "Send OTP",
+    "verifyOTP": "Verify OTP",
+    "enterOTP": "Enter OTP",
+    "verify": "Verify",
+    "register": "Register",
+    "name": "Name",
+    "location": "Location",
+    "primaryCrop": "Primary Crop",
+    "language": "Language",
+    "submit": "Submit",
+    "logout": "Logout"
+  },
+  "detection": {
+    "title": "Disease Detection",
+    "takePhoto": "Take Photo",
+    "selectFromGallery": "Select from Gallery",
+    "detecting": "Detecting disease...",
+    "result": "Detection Result",
+    "disease": "Disease",
+    "severity": "Severity",
+    "confidence": "Confidence",
+    "recommendations": "Recommendations",
+    "history": "Detection History",
+    "noHistory": "No detection history"
+  },
+  "advisory": {
+    "title": "Farming Advisory",
+    "askQuestion": "Ask a Question",
+    "enterQuestion": "Enter your farming question",
+    "submit": "Submit",
+    "loading": "Getting advice...",
+    "response": "Response",
+    "rate": "Rate this advice",
+    "history": "Advisory History",
+    "noHistory": "No advisory history"
+  },
+  "schemes": {
+    "title": "Government Schemes",
+    "category": "Category",
+    "search": "Search schemes",
+    "eligibility": "Eligibility",
+    "benefits": "Benefits",
+    "applicationProcess": "Application Process",
+    "contact": "Contact Information",
+    "noSchemes": "No schemes found"
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "mobileNumber": "Mobile Number",
+    "name": "Name",
+    "location": "Location",
+    "primaryCrop": "Primary Crop",
+    "language": "Language",
+    "appLanguage": "App Language",
+    "readOnly": "Read-only"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "offline": "You are offline",
+    "noInternet": "No internet connection",
+    "hello": "Hello"
+  },
+  "dashboard": {
+    "subtitle": "What would you like to do today?"
+  },
+  "offline": {
+    "indicator": "You are offline. Some features may be limited.",
+    "cachedData": "Showing cached data",
+    "queuedRequest": "Request queued for sync when online",
+    "syncInProgress": "Syncing queued requests...",
+    "syncComplete": "Sync complete",
+    "featureDisabled": "This feature requires internet connection"
+  },
+  "errors": {
+    "invalidMobile": "Invalid mobile number",
+    "invalidOTP": "Invalid OTP",
+    "networkError": "Network error. Please try again.",
+    "serverError": "Server error. Please try again later.",
+    "unknownError": "An unknown error occurred",
+    "nameRequired": "Name is required",
+    "locationRequired": "Location is required",
+    "primaryCropRequired": "Primary crop is required",
+    "updateProfileFailed": "Failed to update profile"
+  }
+}

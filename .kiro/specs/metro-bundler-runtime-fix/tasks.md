@@ -1,0 +1,84 @@
+# Implementation Plan
+
+- [x] 1. Write bug condition exploration test
+  - **Property 1: Fault Condition** - Metro Entry Point Mismatch
+  - **CRITICAL**: This test MUST FAIL on unfixed code - failure confirms the bug exists
+  - **DO NOT attempt to fix the test or the code when it fails**
+  - **NOTE**: This test encodes the expected behavior - it will validate the fix when it passes after implementation
+  - **GOAL**: Surface counterexamples that demonstrate the Metro bundler configuration mismatch
+  - **Scoped PBT Approach**: Scope the property to the concrete failing case - Android app launch with Expo build config expecting `.expo/virtual-metro-entry` while Metro serves `index.js`
+  - Test that when the Android app is launched on the emulator, the Metro bundler serves the correct entry point file (`.expo/virtual-metro-entry.bundle`) without 404 errors
+  - Verify the bug condition from design: `input.platform == 'android' AND input.buildConfig.entryFile.contains('expo/scripts/resolveAppEntry') AND input.metroConfig.preset == '@react-native/metro-config' AND bundleRequest.path.contains('.expo/virtual-metro-entry') AND metroServer.servingPath == 'index.js'`
+  - Test assertions should verify: `result.bundleLoaded == true AND result.metroBundlerResponse.statusCode == 200 AND result.appState == 'running' AND NOT result.error.contains('Unable to load script')`
+  - Run test on UNFIXED code
+  - **EXPECTED OUTCOME**: Test FAILS (this is correct - it proves the bug exists)
+  - Document counterexamples found: Metro returns 404 for `.expo/virtual-metro-entry.bundle`, app crashes with "Unable to load script", Metro logs show entry point mismatch
+  - Mark task complete when test is written, run, and failure is documented
+  - _Requirements: 1.1, 1.2, 1.4, 2.1, 2.2, 2.4_
+
+- [x] 2. Write preservation property tests (BEFORE implementing fix)
+  - **Property 2: Preservation** - Existing Functionality Unchanged
+  - **IMPORTANT**: Follow observation-first methodology
+  - Observe behavior on UNFIXED code for non-buggy inputs (app functionality that doesn't depend on Metro entry point config)
+  - Write property-based tests capturing observed behavior patterns from Preservation Requirements:
+    - Debug APK builds with `./gradlew assembleDebug` succeed
+    - APK installation on emulator works without errors
+    - All existing app functionality (navigation, UI components, API calls, local storage) works correctly
+    - Development workflow with hot reload and fast refresh functions properly
+    - TypeScript compilation and linting work correctly
+  - Property-based testing generates many test cases for stronger guarantees
+  - Test cases for non-bug-condition inputs:
+    - Navigation between screens works correctly
+    - UI components render correctly
+    - API service calls work correctly
+    - Hot reload works correctly
+    - Build process `./gradlew assembleDebug` works correctly
+  - Run tests on UNFIXED code (may need to manually load app or test individual components in isolation)
+  - **EXPECTED OUTCOME**: Tests PASS (this confirms baseline behavior to preserve)
+  - Mark task complete when tests are written, run, and passing on unfixed code
+  - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [x] 3. Fix Metro bundler configuration to align with Expo entry point expectations
+
+  - [x] 3.1 Update metro.config.js to use Expo Metro config
+    - Replace `@react-native/metro-config` import with `expo/metro-config`
+    - Change: `const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config')` 
+    - To: `const {getDefaultConfig, mergeConfig} = require('expo/metro-config')`
+    - Verify that `expo` package (~50.0.0) is installed and includes `expo/metro-config`
+    - Rationale: Expo's Metro config includes necessary transformers and resolvers for virtual entry points
+    - _Bug_Condition: isBugCondition(input) where input.platform == 'android' AND input.buildConfig uses 'expo/scripts/resolveAppEntry' AND input.metroConfig.preset == '@react-native/metro-config' AND bundleRequest expects '.expo/virtual-metro-entry' but Metro serves 'index.js'_
+    - _Expected_Behavior: Metro bundler serves correct entry point (.expo/virtual-metro-entry.bundle) matching build configuration, allowing app to load JavaScript bundles successfully without 404 errors (expectedBehavior: result.bundleLoaded == true AND result.metroBundlerResponse.statusCode == 200 AND result.appState == 'running')_
+    - _Preservation: Debug APK builds, APK installation, existing app functionality (navigation, UI, API calls, storage), development workflow, TypeScript compilation must continue to work exactly as before_
+    - _Requirements: 1.1, 1.2, 1.4, 2.1, 2.2, 2.4, 3.1, 3.2, 3.3, 3.4_
+
+  - [x] 3.2 Verify bug condition exploration test now passes
+    - **Property 1: Expected Behavior** - Metro Serves Correct Entry Point
+    - **IMPORTANT**: Re-run the SAME test from task 1 - do NOT write a new test
+    - The test from task 1 encodes the expected behavior
+    - When this test passes, it confirms the expected behavior is satisfied
+    - Run bug condition exploration test from step 1
+    - Verify Metro bundler serves `.expo/virtual-metro-entry.bundle` with 200 status
+    - Verify app launches successfully on Android emulator without "Unable to load script" error
+    - Verify app displays home screen and is in 'running' state
+    - **EXPECTED OUTCOME**: Test PASSES (confirms bug is fixed)
+    - _Requirements: 2.1, 2.2, 2.4_
+
+  - [x] 3.3 Verify preservation tests still pass
+    - **Property 2: Preservation** - Existing Functionality Unchanged
+    - **IMPORTANT**: Re-run the SAME tests from task 2 - do NOT write new tests
+    - Run preservation property tests from step 2
+    - Verify debug APK builds still succeed
+    - Verify APK installation still works
+    - Verify navigation, UI components, API calls, hot reload still work correctly
+    - Verify TypeScript compilation and linting still work
+    - **EXPECTED OUTCOME**: Tests PASS (confirms no regressions)
+    - Confirm all tests still pass after fix (no regressions)
+    - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Verify bug condition exploration test passes (app launches successfully)
+  - Verify preservation tests pass (existing functionality unchanged)
+  - Verify Metro bundler logs show 200 responses for bundle requests
+  - Verify no 404 errors in Metro logs
+  - Test release build: `cd android && ./gradlew assembleRelease` completes successfully
+  - Ensure all tests pass, ask the user if questions arise

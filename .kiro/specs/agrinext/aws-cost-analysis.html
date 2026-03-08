@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cost Analysis - Phase 1 & 2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover { background: #f8f9fa; }
+        .cost-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+        }
+        .cost-box h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .total-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .total-box h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            border: none;
+            color: white;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .badge-free { background: #28a745; color: white; }
+        .badge-paid { background: #dc3545; color: white; }
+        .badge-optional { background: #ffc107; color: #000; }
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .alert-success {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            color: #856404;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 AWS Cost Analysis</h1>
+            <p>Phase 1 & 2 - Development & Testing Period (6 weeks)</p>
+        </div>
+        
+        <div class="content">
+            <!-- Summary -->
+            <div class="alert alert-success">
+                <h3>🎉 Good News!</h3>
+                <p><strong>Most services can run on AWS Free Tier during development!</strong></p>
+                <p>Estimated total cost for 6 weeks: <strong>$50-150 USD</strong> (mostly for external APIs, not AWS)</p>
+            </div>
+
+            <!-- Total Cost -->
+            <div class="total-box">
+                <h2>$50 - $150</h2>
+                <p style="font-size: 1.2em;">Estimated Total Cost for Phase 1 & 2</p>
+                <p style="margin-top: 10px; opacity: 0.9;">6 weeks of development and testing</p>
+            </div>
+
+            <!-- AWS Services Breakdown -->
+            <div class="section">
+                <h2>AWS Services Cost Breakdown</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Usage</th>
+                            <th>Free Tier</th>
+                            <th>Estimated Cost</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>EC2 (Backend Server)</strong></td>
+                            <td>t2.micro, 24/7</td>
+                            <td>750 hours/month (12 months)</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RDS PostgreSQL</strong></td>
+                            <td>db.t3.micro, 20GB storage</td>
+                            <td>750 hours/month (12 months)</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>S3 (Image Storage)</strong></td>
+                            <td>~100 images, 500MB</td>
+                            <td>5GB storage, 20K GET, 2K PUT</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CloudFront (CDN)</strong></td>
+                            <td>Image delivery</td>
+                            <td>1TB data transfer out</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lambda (Optional)</strong></td>
+                            <td>Image processing</td>
+                            <td>1M requests, 400K GB-seconds</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-optional">OPTIONAL</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>API Gateway (Optional)</strong></td>
+                            <td>REST API</td>
+                            <td>1M API calls/month (12 months)</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-optional">OPTIONAL</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CloudWatch Logs</strong></td>
+                            <td>Application logs</td>
+                            <td>5GB ingestion, 5GB storage</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Transfer</strong></td>
+                            <td>API requests, images</td>
+                            <td>100GB/month out</td>
+                            <td><strong>$0/month</strong></td>
+                            <td><span class="badge badge-free">FREE TIER</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-info">
+                    <strong>💡 AWS Free Tier Note:</strong> All core AWS services needed for Phase 1 & 2 are covered under the Free Tier for the first 12 months!
+                </div>
+            </div>
+
+            <!-- External Services Cost -->
+            <div class="section">
+                <h2>External Services Cost (Non-AWS)</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Usage (6 weeks)</th>
+                            <th>Free Tier</th>
+                            <th>Estimated Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Twilio SMS (OTP)</strong></td>
+                            <td>~500 OTPs</td>
+                            <td>$15 trial credit</td>
+                            <td><strong>$0-10</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>OpenAI API (Advisory)</strong></td>
+                            <td>~1,000 queries</td>
+                            <td>$5 free credit</td>
+                            <td><strong>$20-50</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hugging Face (Disease Detection)</strong></td>
+                            <td>~500 detections</td>
+                            <td>Free tier available</td>
+                            <td><strong>$0-30</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Google Translate API</strong></td>
+                            <td>~5,000 characters</td>
+                            <td>$300 free credit (new accounts)</td>
+                            <td><strong>$0</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cloudinary (Alternative to S3)</strong></td>
+                            <td>Image storage & CDN</td>
+                            <td>25GB storage, 25GB bandwidth</td>
+                            <td><strong>$0</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="cost-box">
+                    <h3>External Services Total: $20-90 for 6 weeks</h3>
+                    <p>Most expensive: OpenAI API for advisory service</p>
+                    <p><strong>Cost Optimization:</strong> Use free alternatives during development (see recommendations below)</p>
+                </div>
+            </div>
+
+            <!-- Detailed Cost Breakdown -->
+            <div class="section">
+                <h2>Detailed Monthly Cost Breakdown</h2>
+                
+                <div class="cost-box">
+                    <h3>Month 1-2 (Phase 1 - Foundation)</h3>
+                    <table>
+                        <tr>
+                            <td>AWS Services</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free Tier)</td>
+                        </tr>
+                        <tr>
+                            <td>Twilio SMS (Testing)</td>
+                            <td><strong>$0-5</strong></td>
+                            <td>(Trial credit)</td>
+                        </tr>
+                        <tr>
+                            <td>Development Tools</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free)</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #f8f9fa;">
+                            <td>Total Month 1-2</td>
+                            <td><strong>$0-5</strong></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="cost-box">
+                    <h3>Month 2 (Phase 2 - Disease Detection, Week 3-4)</h3>
+                    <table>
+                        <tr>
+                            <td>AWS Services</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free Tier)</td>
+                        </tr>
+                        <tr>
+                            <td>Hugging Face API</td>
+                            <td><strong>$0-15</strong></td>
+                            <td>(~200 detections)</td>
+                        </tr>
+                        <tr>
+                            <td>S3 Storage</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free Tier)</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #f8f9fa;">
+                            <td>Total Week 3-4</td>
+                            <td><strong>$0-15</strong></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="cost-box">
+                    <h3>Month 2 (Phase 2 - Advisory Service, Week 5-6)</h3>
+                    <table>
+                        <tr>
+                            <td>AWS Services</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free Tier)</td>
+                        </tr>
+                        <tr>
+                            <td>OpenAI API (GPT-4)</td>
+                            <td><strong>$20-50</strong></td>
+                            <td>(~500 queries)</td>
+                        </tr>
+                        <tr>
+                            <td>Google Translate</td>
+                            <td><strong>$0</strong></td>
+                            <td>(Free credit)</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #f8f9fa;">
+                            <td>Total Week 5-6</td>
+                            <td><strong>$20-50</strong></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cost Optimization -->
+            <div class="section">
+                <h2>💡 Cost Optimization Strategies</h2>
+                
+                <div class="cost-box">
+                    <h3>1. Use Free Alternatives During Development</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><strong>OpenAI:</strong> Use GPT-3.5-turbo instead of GPT-4 ($0.002 vs $0.03 per 1K tokens) = Save $40-60</li>
+                        <li><strong>Hugging Face:</strong> Use free inference API with rate limits = Save $30</li>
+                        <li><strong>Twilio:</strong> Use console testing instead of real SMS = Save $10</li>
+                        <li><strong>Cloudinary:</strong> Use instead of S3 for simpler setup = $0 cost</li>
+                    </ul>
+                </div>
+
+                <div class="cost-box">
+                    <h3>2. Implement Caching</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Cache AI responses for common queries</li>
+                        <li>Cache disease detection results</li>
+                        <li>Cache translated content</li>
+                        <li><strong>Potential Savings:</strong> 50-70% reduction in API calls</li>
+                    </ul>
+                </div>
+
+                <div class="cost-box">
+                    <h3>3. Use Mock Data for Testing</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Create mock responses for development</li>
+                        <li>Only use real APIs for final testing</li>
+                        <li>Use environment flags to switch between mock/real</li>
+                        <li><strong>Potential Savings:</strong> $30-50 during development</li>
+                    </ul>
+                </div>
+
+                <div class="cost-box">
+                    <h3>4. Rate Limiting & Quotas</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Implement rate limiting: 10 requests/minute per user</li>
+                        <li>Set daily quotas during testing</li>
+                        <li>Monitor usage with CloudWatch</li>
+                        <li><strong>Prevents:</strong> Unexpected cost spikes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Optimized Cost Estimate -->
+            <div class="section">
+                <h2>Optimized Cost Estimate (With Strategies)</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Original Cost</th>
+                            <th>Optimized Cost</th>
+                            <th>Savings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AWS Services</td>
+                            <td>$0</td>
+                            <td>$0</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Twilio SMS</td>
+                            <td>$10</td>
+                            <td>$0</td>
+                            <td>$10</td>
+                        </tr>
+                        <tr>
+                            <td>OpenAI API</td>
+                            <td>$50</td>
+                            <td>$5-10</td>
+                            <td>$40-45</td>
+                        </tr>
+                        <tr>
+                            <td>Hugging Face</td>
+                            <td>$30</td>
+                            <td>$0</td>
+                            <td>$30</td>
+                        </tr>
+                        <tr>
+                            <td>Google Translate</td>
+                            <td>$0</td>
+                            <td>$0</td>
+                            <td>-</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #d4edda;">
+                            <td>TOTAL (6 weeks)</td>
+                            <td>$90</td>
+                            <td><strong>$5-10</strong></td>
+                            <td><strong>$80-85</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="alert alert-success">
+                    <h3>🎉 Optimized Total: $5-10 for entire Phase 1 & 2!</h3>
+                    <p>By using free alternatives and mock data during development, you can reduce costs by 90%!</p>
+                </div>
+            </div>
+
+            <!-- Production Costs -->
+            <div class="section">
+                <h2>📊 Production Costs (Post-Launch)</h2>
+                
+                <div class="alert alert-warning">
+                    <strong>⚠️ Note:</strong> These are estimates for production with 1,000 active users
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Usage</th>
+                            <th>Monthly Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EC2 (t2.small)</td>
+                            <td>24/7 production server</td>
+                            <td>$17/month</td>
+                        </tr>
+                        <tr>
+                            <td>RDS (db.t3.small)</td>
+                            <td>Production database</td>
+                            <td>$30/month</td>
+                        </tr>
+                        <tr>
+                            <td>S3 + CloudFront</td>
+                            <td>10GB storage, 100GB transfer</td>
+                            <td>$5/month</td>
+                        </tr>
+                        <tr>
+                            <td>Twilio SMS</td>
+                            <td>1,000 OTPs/month</td>
+                            <td>$20/month</td>
+                        </tr>
+                        <tr>
+                            <td>OpenAI API</td>
+                            <td>5,000 queries/month</td>
+                            <td>$50-100/month</td>
+                        </tr>
+                        <tr>
+                            <td>Hugging Face</td>
+                            <td>2,000 detections/month</td>
+                            <td>$30-50/month</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #fff3cd;">
+                            <td>TOTAL (Production)</td>
+                            <td>1,000 active users</td>
+                            <td><strong>$152-222/month</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="section">
+                <h2>✅ Recommendations</h2>
+                
+                <div class="cost-box">
+                    <h3>For Phase 1 & 2 Development:</h3>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li><strong>Use AWS Free Tier</strong> - All infrastructure is free for 12 months</li>
+                        <li><strong>Use GPT-3.5-turbo</strong> - Much cheaper than GPT-4 for development</li>
+                        <li><strong>Use Hugging Face Free Tier</strong> - Sufficient for testing</li>
+                        <li><strong>Mock SMS in Development</strong> - Only test real SMS before launch</li>
+                        <li><strong>Implement Caching Early</strong> - Reduces API calls significantly</li>
+                        <li><strong>Monitor Usage Daily</strong> - Set up billing alerts at $10, $25, $50</li>
+                    </ol>
+                </div>
+
+                <div class="cost-box">
+                    <h3>Budget Allocation:</h3>
+                    <table>
+                        <tr>
+                            <td><strong>Conservative Budget:</strong></td>
+                            <td>$50 for 6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recommended Budget:</strong></td>
+                            <td>$100 for 6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maximum Budget:</strong></td>
+                            <td>$150 for 6 weeks</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Final Summary -->
+            <div class="total-box">
+                <h2>Final Answer</h2>
+                <p style="font-size: 1.3em; margin: 20px 0;">
+                    <strong>AWS Credits Needed: $0</strong><br>
+                    (All AWS services covered by Free Tier)
+                </p>
+                <p style="font-size: 1.3em; margin: 20px 0;">
+                    <strong>Total Budget Needed: $50-100</strong><br>
+                    (Mostly for external APIs: OpenAI, Twilio, Hugging Face)
+                </p>
+                <p style="margin-top: 20px; opacity: 0.9;">
+                    With optimization strategies: <strong>$5-10 only!</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

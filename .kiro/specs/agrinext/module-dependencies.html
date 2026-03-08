@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinext MVP - Module Dependencies & Build Order</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .priority-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+        }
+        .priority-1 { border-left-color: #dc3545; }
+        .priority-2 { border-left-color: #fd7e14; }
+        .priority-3 { border-left-color: #ffc107; }
+        .priority-4 { border-left-color: #28a745; }
+        .priority-5 { border-left-color: #17a2b8; }
+        .priority-box h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .priority-box .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .badge-critical { background: #dc3545; color: white; }
+        .badge-high { background: #fd7e14; color: white; }
+        .badge-medium { background: #ffc107; color: #000; }
+        .badge-low { background: #28a745; color: white; }
+        .badge-optional { background: #17a2b8; color: white; }
+        .dependency-list {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        .dependency-list li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover { background: #f8f9fa; }
+        .timeline {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        .timeline-item h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Module Dependencies & Build Order</h1>
+            <p>Agrinext MVP Development Sequence</p>
+        </div>
+        
+        <div class="content">
+            <!-- Dependency Graph -->
+            <div class="section">
+                <h2>Module Dependency Graph</h2>
+                <div class="mermaid">
+graph TD
+    subgraph "Phase 1: Foundation"
+        Auth[Authentication Module<br/>PRIORITY 1]
+        DB[Database Setup<br/>PRIORITY 1]
+        API[API Gateway<br/>PRIORITY 1]
+    end
+    
+    subgraph "Phase 2: Core Features"
+        Disease[Disease Detection<br/>PRIORITY 2]
+        Advisory[Advisory Service<br/>PRIORITY 2]
+    end
+    
+    subgraph "Phase 3: Secondary Features"
+        Schemes[Government Schemes<br/>PRIORITY 3]
+        Weather[Weather Service<br/>PRIORITY 4]
+    end
+    
+    subgraph "Phase 4: Enhancements"
+        Profile[Profile Management<br/>PRIORITY 5]
+    end
+    
+    DB --> Auth
+    Auth --> API
+    API --> Disease
+    API --> Advisory
+    API --> Schemes
+    API --> Weather
+    Auth --> Profile
+    
+    Disease -.->|Optional| Advisory
+    Advisory -.->|Optional| Disease
+    
+    style Auth fill:#dc3545,color:#fff
+    style DB fill:#dc3545,color:#fff
+    style API fill:#dc3545,color:#fff
+    style Disease fill:#fd7e14,color:#fff
+    style Advisory fill:#fd7e14,color:#fff
+    style Schemes fill:#ffc107,color:#000
+    style Weather fill:#28a745,color:#fff
+    style Profile fill:#17a2b8,color:#fff
+                </div>
+            </div>
+
+            <!-- Build Order -->
+            <div class="section">
+                <h2>Recommended Build Order</h2>
+                
+                <div class="priority-box priority-1">
+                    <span class="badge badge-critical">PRIORITY 1 - CRITICAL</span>
+                    <h3>Phase 1: Foundation (Week 1-2)</h3>
+                    <p><strong>Build First - No Dependencies</strong></p>
+                    <ul class="dependency-list">
+                        <li><strong>Database Setup</strong> - PostgreSQL schema, tables, indexes</li>
+                        <li><strong>Authentication Module</strong> - OTP, JWT, user registration</li>
+                        <li><strong>API Gateway</strong> - Express server, routing, middleware</li>
+                    </ul>
+                    <p><strong>Why First:</strong> All other modules depend on these foundation components. Nothing can work without authentication and API infrastructure.</p>
+                    <p><strong>Duration:</strong> 2 weeks</p>
+                </div>
+
+                <div class="priority-box priority-2">
+                    <span class="badge badge-high">PRIORITY 2 - HIGH</span>
+                    <h3>Phase 2: Core Value Propositions (Week 3-6)</h3>
+                    <p><strong>Build Second - Depends on Phase 1</strong></p>
+                    <ul class="dependency-list">
+                        <li><strong>Disease Detection Module</strong> - Image upload, AI integration, results display</li>
+                        <li><strong>Advisory Service Module</strong> - LLM integration, query processing, history</li>
+                    </ul>
+                    <p><strong>Why Second:</strong> These are the primary value propositions. Can be built in parallel once foundation is ready.</p>
+                    <p><strong>Dependencies:</strong></p>
+                    <ul class="dependency-list">
+                        <li>✓ Authentication (for user identification)</li>
+                        <li>✓ API Gateway (for request handling)</li>
+                        <li>✓ Database (for storing history)</li>
+                    </ul>
+                    <p><strong>Duration:</strong> 4 weeks (can be parallel)</p>
+                </div>
+
+                <div class="priority-box priority-3">
+                    <span class="badge badge-medium">PRIORITY 3 - MEDIUM</span>
+                    <h3>Phase 3: Government Schemes (Week 7-8)</h3>
+                    <p><strong>Build Third - Depends on Phase 1</strong></p>
+                    <ul class="dependency-list">
+                        <li><strong>Scheme Browser Module</strong> - Scheme database, filtering, eligibility checker</li>
+                    </ul>
+                    <p><strong>Why Third:</strong> Important feature but not critical for MVP launch. Simpler to implement (read-only).</p>
+                    <p><strong>Dependencies:</strong></p>
+                    <ul class="dependency-list">
+                        <li>✓ Authentication (for personalized filtering)</li>
+                        <li>✓ API Gateway (for data retrieval)</li>
+                        <li>✓ Database (for scheme data)</li>
+                    </ul>
+                    <p><strong>Duration:</strong> 2 weeks</p>
+                </div>
+
+                <div class="priority-box priority-4">
+                    <span class="badge badge-low">PRIORITY 4 - LOW</span>
+                    <h3>Phase 4: Weather Service (Week 7-8)</h3>
+                    <p><strong>Build Fourth - Can be parallel with Phase 3</strong></p>
+                    <ul class="dependency-list">
+                        <li><strong>Weather Module</strong> - Weather API integration, forecast display</li>
+                    </ul>
+                    <p><strong>Why Fourth:</strong> Nice-to-have feature. Simple external API integration. Can be built in parallel with schemes.</p>
+                    <p><strong>Dependencies:</strong></p>
+                    <ul class="dependency-list">
+                        <li>✓ Authentication (for location data)</li>
+                        <li>✓ API Gateway (for request routing)</li>
+                    </ul>
+                    <p><strong>Duration:</strong> 1 week</p>
+                </div>
+
+                <div class="priority-box priority-5">
+                    <span class="badge badge-optional">PRIORITY 5 - OPTIONAL</span>
+                    <h3>Phase 5: Profile Management (Week 9-10)</h3>
+                    <p><strong>Build Last - Enhancement Phase</strong></p>
+                    <ul class="dependency-list">
+                        <li><strong>Profile Module</strong> - Edit profile, manage crops, preferences</li>
+                    </ul>
+                    <p><strong>Why Last:</strong> Basic profile is created during registration. Advanced management is optional for MVP.</p>
+                    <p><strong>Dependencies:</strong></p>
+                    <ul class="dependency-list">
+                        <li>✓ Authentication (for user data)</li>
+                        <li>✓ Database (for profile storage)</li>
+                    </ul>
+                    <p><strong>Duration:</strong> 1 week</p>
+                </div>
+            </div>
+
+            <!-- Dependency Matrix -->
+            <div class="section">
+                <h2>Module Dependency Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Depends On</th>
+                            <th>Required By</th>
+                            <th>Can Build Parallel With</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Database</strong></td>
+                            <td>None</td>
+                            <td>All modules</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Authentication</strong></td>
+                            <td>Database</td>
+                            <td>All modules</td>
+                            <td>API Gateway</td>
+                        </tr>
+                        <tr>
+                            <td><strong>API Gateway</strong></td>
+                            <td>Database, Authentication</td>
+                            <td>All feature modules</td>
+                            <td>Authentication</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Disease Detection</strong></td>
+                            <td>Auth, API, Database</td>
+                            <td>None</td>
+                            <td>Advisory, Schemes, Weather</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Advisory Service</strong></td>
+                            <td>Auth, API, Database</td>
+                            <td>None</td>
+                            <td>Disease, Schemes, Weather</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Government Schemes</strong></td>
+                            <td>Auth, API, Database</td>
+                            <td>None</td>
+                            <td>Disease, Advisory, Weather</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Weather Service</strong></td>
+                            <td>Auth, API</td>
+                            <td>None</td>
+                            <td>Disease, Advisory, Schemes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Profile Management</strong></td>
+                            <td>Auth, Database</td>
+                            <td>None</td>
+                            <td>All feature modules</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Critical Path -->
+            <div class="section">
+                <h2>Critical Path Analysis</h2>
+                <div class="mermaid">
+gantt
+    title Critical Path for MVP Development
+    dateFormat YYYY-MM-DD
+    section Foundation
+    Database Setup           :crit, db, 2026-03-01, 5d
+    Authentication Module    :crit, auth, after db, 7d
+    API Gateway             :crit, api, after db, 7d
+    
+    section Core Features
+    Disease Detection       :crit, disease, after api, 14d
+    Advisory Service        :crit, advisory, after api, 14d
+    
+    section Secondary
+    Government Schemes      :schemes, after disease, 10d
+    Weather Service         :weather, after api, 7d
+    
+    section Enhancement
+    Profile Management      :profile, after schemes, 7d
+                </div>
+            </div>
+
+            <!-- Development Timeline -->
+            <div class="section">
+                <h2>Detailed Development Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Week 1-2: Foundation Layer</h4>
+                        <p><strong>Modules:</strong> Database, Authentication, API Gateway</p>
+                        <p><strong>Team:</strong> Full-stack developer + Backend developer</p>
+                        <p><strong>Deliverable:</strong> Users can register and login</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Week 3-4: Disease Detection</h4>
+                        <p><strong>Modules:</strong> Disease Detection Module</p>
+                        <p><strong>Team:</strong> Mobile developer + ML engineer</p>
+                        <p><strong>Deliverable:</strong> Users can detect crop diseases</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Week 5-6: Advisory Service</h4>
+                        <p><strong>Modules:</strong> Advisory Service Module</p>
+                        <p><strong>Team:</strong> Full-stack developer + Mobile developer</p>
+                        <p><strong>Deliverable:</strong> Users can ask farming questions</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Week 7-8: Schemes & Weather</h4>
+                        <p><strong>Modules:</strong> Government Schemes, Weather Service</p>
+                        <p><strong>Team:</strong> Full-stack developer</p>
+                        <p><strong>Deliverable:</strong> Users can browse schemes and check weather</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h4>Week 9-10: Polish & Enhancement</h4>
+                        <p><strong>Modules:</strong> Profile Management, UI/UX improvements</p>
+                        <p><strong>Team:</strong> Full team</p>
+                        <p><strong>Deliverable:</strong> Production-ready MVP</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parallel Development Strategy -->
+            <div class="section">
+                <h2>Parallel Development Strategy</h2>
+                <div class="mermaid">
+graph LR
+    subgraph "Week 1-2"
+        W1[Database Setup]
+        W2[Auth Module]
+        W3[API Gateway]
+    end
+    
+    subgraph "Week 3-4"
+        W4[Disease Detection]
+    end
+    
+    subgraph "Week 5-6"
+        W5[Advisory Service]
+    end
+    
+    subgraph "Week 7-8"
+        W6[Schemes Module]
+        W7[Weather Module]
+    end
+    
+    subgraph "Week 9-10"
+        W8[Profile Management]
+        W9[Polish & Testing]
+    end
+    
+    W1 --> W2
+    W1 --> W3
+    W2 --> W4
+    W3 --> W4
+    W4 --> W5
+    W5 --> W6
+    W5 --> W7
+    W6 --> W8
+    W7 --> W8
+    W8 --> W9
+    
+    style W1 fill:#dc3545,color:#fff
+    style W2 fill:#dc3545,color:#fff
+    style W3 fill:#dc3545,color:#fff
+    style W4 fill:#fd7e14,color:#fff
+    style W5 fill:#fd7e14,color:#fff
+    style W6 fill:#ffc107,color:#000
+    style W7 fill:#28a745,color:#fff
+    style W8 fill:#17a2b8,color:#fff
+    style W9 fill:#6c757d,color:#fff
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="section">
+                <h2>Key Insights & Recommendations</h2>
+                
+                <h3 style="color: #667eea; margin: 20px 0 10px 0;">✅ Can Build in Parallel:</h3>
+                <ul class="dependency-list">
+                    <li><strong>Week 1-2:</strong> Database + Authentication + API Gateway (different developers)</li>
+                    <li><strong>Week 7-8:</strong> Government Schemes + Weather Service (independent features)</li>
+                    <li><strong>After Week 6:</strong> All secondary features can be built in parallel</li>
+                </ul>
+
+                <h3 style="color: #667eea; margin: 20px 0 10px 0;">⚠️ Must Build Sequentially:</h3>
+                <ul class="dependency-list">
+                    <li><strong>Foundation First:</strong> Database → Auth/API → Everything else</li>
+                    <li><strong>Core Features:</strong> Disease Detection and Advisory need foundation complete</li>
+                    <li><strong>Cannot skip:</strong> Authentication is required by all modules</li>
+                </ul>
+
+                <h3 style="color: #667eea; margin: 20px 0 10px 0;">🎯 Optimization Tips:</h3>
+                <ul class="dependency-list">
+                    <li><strong>Start with Database:</strong> Get schema right early to avoid rework</li>
+                    <li><strong>Parallel Auth + API:</strong> Different developers can work simultaneously</li>
+                    <li><strong>Disease + Advisory:</strong> Can be built by different teams after Week 2</li>
+                    <li><strong>Weather is simplest:</strong> Good for junior developers or quick wins</li>
+                    <li><strong>Profile is optional:</strong> Can be deferred if timeline is tight</li>
+                </ul>
+
+                <h3 style="color: #667eea; margin: 20px 0 10px 0;">🚀 Fast Track Option (8 weeks):</h3>
+                <ul class="dependency-list">
+                    <li><strong>Week 1-2:</strong> Foundation (Database, Auth, API)</li>
+                    <li><strong>Week 3-4:</strong> Disease Detection only</li>
+                    <li><strong>Week 5-6:</strong> Advisory Service only</li>
+                    <li><strong>Week 7-8:</strong> Schemes + Weather + Polish</li>
+                    <li><strong>Skip:</strong> Profile Management (use basic profile from registration)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default'
+        });
+    </script>
+</body>
+</html>

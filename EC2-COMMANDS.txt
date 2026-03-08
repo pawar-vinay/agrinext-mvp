@@ -1,0 +1,21 @@
+# EC2 Diagnostic Commands
+# Copy and paste these commands ONE AT A TIME into your EC2 terminal
+
+# Step 1: Test DNS resolution
+echo "Testing DNS resolution..."
+nslookup agrinext-db-1772367775698.cyjeessmab3d.us-east-1.rds.amazonaws.com
+
+# Step 2: Test port connectivity
+echo "Testing port 5432 connectivity..."
+timeout 5 bash -c 'cat < /dev/null > /dev/tcp/agrinext-db-1772367775698.cyjeessmab3d.us-east-1.rds.amazonaws.com/5432' && echo "✅ Port is reachable" || echo "❌ Port is NOT reachable"
+
+# Step 3: Test database connection
+cd ~/agrinext-phase2/backend
+node test-db.js
+
+# Step 4: Check environment variables
+grep "DB_HOST\|DB_PORT\|DB_NAME\|DB_USER" .env
+
+# Step 5: Try starting the backend directly (not with PM2)
+cd ~/agrinext-phase2/backend
+tsx src/server.ts

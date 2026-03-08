@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinext MVP - Database Schema</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover { background: #f8f9fa; }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .badge-pk { background: #dc3545; color: white; }
+        .badge-fk { background: #ffc107; color: #000; }
+        .badge-idx { background: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Database Schema</h1>
+            <p>Agrinext MVP - PostgreSQL 14+</p>
+        </div>
+        
+        <div class="content">
+            <!-- ER Diagram -->
+            <div class="section">
+                <h2>Entity Relationship Diagram</h2>
+                <div class="mermaid">
+erDiagram
+    USERS ||--o{ USER_SESSIONS : has
+    USERS ||--o{ DISEASE_DETECTIONS : creates
+    USERS ||--o{ ADVISORIES : requests
+    USERS ||--o{ SCHEME_APPLICATIONS : submits
+    USERS ||--o{ AUDIT_LOGS : generates
+    GOVERNMENT_SCHEMES ||--o{ SCHEME_APPLICATIONS : receives
+    
+    USERS {
+        uuid id PK
+        varchar mobile_number UK
+        varchar name
+        varchar language
+        varchar state
+        varchar district
+        varchar primary_crop
+        timestamp created_at
+        boolean is_active
+    }
+    
+    USER_SESSIONS {
+        uuid id PK
+        uuid user_id FK
+        text access_token
+        text refresh_token
+        timestamp expires_at
+        boolean is_active
+    }
+    
+    DISEASE_DETECTIONS {
+        uuid id PK
+        uuid user_id FK
+        text image_url
+        varchar crop_type
+        varchar disease_name
+        decimal confidence
+        varchar severity
+        text treatment
+        timestamp created_at
+    }
+    
+    ADVISORIES {
+        uuid id PK
+        uuid user_id FK
+        text query
+        text response
+        varchar category
+        varchar crop_type
+        integer rating
+        timestamp created_at
+    }
+    
+    GOVERNMENT_SCHEMES {
+        uuid id PK
+        varchar scheme_code UK
+        text name_en
+        text description_en
+        varchar category
+        text[] benefits
+        jsonb eligibility
+        text[] applicable_states
+        text[] applicable_crops
+        boolean is_active
+    }
+    
+    SCHEME_APPLICATIONS {
+        uuid id PK
+        uuid user_id FK
+        uuid scheme_id FK
+        jsonb application_data
+        varchar status
+        varchar tracking_id UK
+        timestamp submitted_at
+    }
+    
+    AUDIT_LOGS {
+        uuid id PK
+        uuid user_id FK
+        varchar action
+        varchar entity_type
+        uuid entity_id
+        jsonb old_values
+        jsonb new_values
+        timestamp created_at
+    }
+                </div>
+            </div>
+
+            <!-- Table Details -->
+            <div class="section">
+                <h2>Table: users</h2>
+                <p>Stores farmer user profiles and authentication data</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Type</th>
+                            <th>Constraints</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>id <span class="badge badge-pk">PK</span></td>
+                            <td>UUID</td>
+                            <td>PRIMARY KEY</td>
+                            <td>Unique user identifier</td>
+                        </tr>
+                        <tr>
+                            <td>mobile_number</td>
+                            <td>VARCHAR(15)</td>
+                            <td>UNIQUE, NOT NULL</td>
+                            <td>User's mobile number (login credential)</td>
+                        </tr>
+                        <tr>
+                            <td>name</td>
+                            <td>VARCHAR(100)</td>
+                            <td>NOT NULL</td>
+                            <td>Farmer's full name</td>
+                        </tr>
+                        <tr>
+                            <td>language</td>
+                            <td>VARCHAR(10)</td>
+                            <td>DEFAULT 'en'</td>
+                            <td>Preferred language (en, hi, te)</td>
+                        </tr>
+                        <tr>
+                            <td>state</td>
+                            <td>VARCHAR(50)</td>
+                            <td>-</td>
+                            <td>State name</td>
+                        </tr>
+                        <tr>
+                            <td>district</td>
+                            <td>VARCHAR(50)</td>
+                            <td>-</td>
+                            <td>District name</td>
+                        </tr>
+                        <tr>
+                            <td>primary_crop</td>
+                            <td>VARCHAR(50)</td>
+                            <td>-</td>
+                            <td>Main crop cultivated</td>
+                        </tr>
+                        <tr>
+                            <td>latitude</td>
+                            <td>DECIMAL(10,8)</td>
+                            <td>-</td>
+                            <td>Location latitude</td>
+                        </tr>
+                        <tr>
+                            <td>longitude</td>
+                            <td>DECIMAL(11,8)</td>
+                            <td>-</td>
+                            <td>Location longitude</td>
+                        </tr>
+                        <tr>
+                            <td>is_active</td>
+                            <td>BOOLEAN</td>
+                            <td>DEFAULT true</td>
+                            <td>Account status</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><span class="badge badge-idx">INDEX</span> mobile_number, state+district, is_active, created_at</p>
+            </div>
+
+            <div class="section">
+                <h2>Table: disease_detections</h2>
+                <p>Stores crop disease detection results from AI analysis</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Type</th>
+                            <th>Constraints</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>id <span class="badge badge-pk">PK</span></td>
+                            <td>UUID</td>
+                            <td>PRIMARY KEY</td>
+                            <td>Detection record ID</td>
+                        </tr>
+                        <tr>
+                            <td>user_id <span class="badge badge-fk">FK</span></td>
+                            <td>UUID</td>
+                            <td>REFERENCES users(id)</td>
+                            <td>User who uploaded image</td>
+                        </tr>
+                        <tr>
+                            <td>image_url</td>
+                            <td>TEXT</td>
+                            <td>NOT NULL</td>
+                            <td>S3/Cloudinary image URL</td>
+                        </tr>
+                        <tr>
+                            <td>crop_type</td>
+                            <td>VARCHAR(50)</td>
+                            <td>NOT NULL</td>
+                            <td>Type of crop in image</td>
+                        </tr>
+                        <tr>
+                            <td>disease_name</td>
+                            <td>VARCHAR(100)</td>
+                            <td>-</td>
+                            <td>Detected disease name</td>
+                        </tr>
+                        <tr>
+                            <td>confidence</td>
+                            <td>DECIMAL(5,2)</td>
+                            <td>0-100</td>
+                            <td>AI confidence percentage</td>
+                        </tr>
+                        <tr>
+                            <td>severity</td>
+                            <td>VARCHAR(20)</td>
+                            <td>low/medium/high/critical</td>
+                            <td>Disease severity level</td>
+                        </tr>
+                        <tr>
+                            <td>treatment_recommendations</td>
+                            <td>TEXT</td>
+                            <td>-</td>
+                            <td>Treatment advice</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><span class="badge badge-idx">INDEX</span> user_id, created_at, disease_id, location, crop_type</p>
+            </div>
+
+            <div class="section">
+                <h2>Table: advisories</h2>
+                <p>Stores farming advisory queries and AI-generated responses</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Type</th>
+                            <th>Constraints</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>id <span class="badge badge-pk">PK</span></td>
+                            <td>UUID</td>
+                            <td>PRIMARY KEY</td>
+                            <td>Advisory record ID</td>
+                        </tr>
+                        <tr>
+                            <td>user_id <span class="badge badge-fk">FK</span></td>
+                            <td>UUID</td>
+                            <td>REFERENCES users(id)</td>
+                            <td>User who asked question</td>
+                        </tr>
+                        <tr>
+                            <td>query</td>
+                            <td>TEXT</td>
+                            <td>NOT NULL</td>
+                            <td>User's farming question</td>
+                        </tr>
+                        <tr>
+                            <td>response</td>
+                            <td>TEXT</td>
+                            <td>NOT NULL</td>
+                            <td>AI-generated answer</td>
+                        </tr>
+                        <tr>
+                            <td>category</td>
+                            <td>VARCHAR(50)</td>
+                            <td>-</td>
+                            <td>Advisory category</td>
+                        </tr>
+                        <tr>
+                            <td>rating</td>
+                            <td>INTEGER</td>
+                            <td>1-5</td>
+                            <td>User rating (helpful/not)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><span class="badge badge-idx">INDEX</span> user_id, created_at, category, rating</p>
+            </div>
+
+            <div class="section">
+                <h2>Table: government_schemes</h2>
+                <p>Master data for government agricultural schemes</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Type</th>
+                            <th>Constraints</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>id <span class="badge badge-pk">PK</span></td>
+                            <td>UUID</td>
+                            <td>PRIMARY KEY</td>
+                            <td>Scheme ID</td>
+                        </tr>
+                        <tr>
+                            <td>scheme_code</td>
+                            <td>VARCHAR(50)</td>
+                            <td>UNIQUE</td>
+                            <td>Official scheme code</td>
+                        </tr>
+                        <tr>
+                            <td>name_en/hi/te</td>
+                            <td>TEXT</td>
+                            <td>NOT NULL (en)</td>
+                            <td>Scheme name in 3 languages</td>
+                        </tr>
+                        <tr>
+                            <td>description_en/hi/te</td>
+                            <td>TEXT</td>
+                            <td>NOT NULL (en)</td>
+                            <td>Scheme description</td>
+                        </tr>
+                        <tr>
+                            <td>category</td>
+                            <td>VARCHAR(50)</td>
+                            <td>NOT NULL</td>
+                            <td>Scheme category</td>
+                        </tr>
+                        <tr>
+                            <td>benefits_en/hi/te</td>
+                            <td>TEXT[]</td>
+                            <td>-</td>
+                            <td>List of benefits</td>
+                        </tr>
+                        <tr>
+                            <td>eligibility_criteria</td>
+                            <td>JSONB</td>
+                            <td>-</td>
+                            <td>Eligibility rules</td>
+                        </tr>
+                        <tr>
+                            <td>applicable_states</td>
+                            <td>TEXT[]</td>
+                            <td>-</td>
+                            <td>Applicable states</td>
+                        </tr>
+                        <tr>
+                            <td>applicable_crops</td>
+                            <td>TEXT[]</td>
+                            <td>-</td>
+                            <td>Applicable crops</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><span class="badge badge-idx">INDEX</span> category, is_active, applicable_states (GIN), applicable_crops (GIN)</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="section">
+                <h2>Database Statistics</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Total Tables</td><td>8</td></tr>
+                        <tr><td>Total Views</td><td>2</td></tr>
+                        <tr><td>Total Indexes</td><td>25+</td></tr>
+                        <tr><td>Total Triggers</td><td>3</td></tr>
+                        <tr><td>Total Functions</td><td>3</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default'
+        });
+    </script>
+</body>
+</html>

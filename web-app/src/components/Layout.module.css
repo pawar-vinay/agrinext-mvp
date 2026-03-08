@@ -1,0 +1,105 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  background: #f5f6fa;
+}
+
+.sidebar {
+  width: 260px;
+  background: white;
+  border-right: 1px solid #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.logo h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  color: #7f8c8d;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.navItem:hover {
+  background: #f8f9fa;
+  color: #2c3e50;
+}
+
+.navItem.active {
+  background: #f0f4ff;
+  color: #667eea;
+  border-left-color: #667eea;
+  font-weight: 600;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.user {
+  padding: 1.5rem;
+  border-top: 1px solid #ecf0f1;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.userInfo strong {
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.userInfo small {
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #ecf0f1;
+  border: none;
+  border-radius: 8px;
+  color: #2c3e50;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logoutBtn:hover {
+  background: #bdc3c7;
+}
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+}

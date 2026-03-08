@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinext MVP - User Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-box {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .legend-box.auth { background: #fef3c7; }
+        .legend-box.disease { background: #dbeafe; }
+        .legend-box.advisory { background: #d1fae5; }
+        .legend-box.schemes { background: #fce7f3; }
+        .legend-box.weather { background: #e0e7ff; }
+        
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .flow-section {
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            background: #f7fafc;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .screens {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .screen {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .screen:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .screen.auth { border-left: 5px solid #fbbf24; }
+        .screen.disease { border-left: 5px solid #3b82f6; }
+        .screen.advisory { border-left: 5px solid #10b981; }
+        .screen.schemes { border-left: 5px solid #ec4899; }
+        .screen.weather { border-left: 5px solid #6366f1; }
+        
+        .screen-name {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .screen-desc {
+            color: #718096;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .screen-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .screen-features li {
+            color: #4a5568;
+            font-size: 0.85em;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .screen-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .arrows {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            color: #667eea;
+            font-size: 2em;
+        }
+        
+        .navigation {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .navigation-title {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .navigation-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .nav-link {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+        
+        .priority {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+        
+        .priority.high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .priority.medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .priority.low {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 Agrinext MVP - User Flow</h1>
+        <p class="subtitle">Interactive Mobile Application Flow for Rural Indian Farmers</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box auth"></div>
+                <span>Authentication</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box disease"></div>
+                <span>Disease Detection</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box advisory"></div>
+                <span>Advisory Service</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box schemes"></div>
+                <span>Government Schemes</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box weather"></div>
+                <span>Weather Info</span>
+            </div>
+        </div>
+        
+        <div class="flow-container">
+            
+            <!-- AUTHENTICATION FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">1. Authentication & Onboarding Flow</h2>
+                <div class="screens">
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Splash Screen</div>
+                        <div class="screen-desc">App launch screen with branding</div>
+                        <ul class="screen-features">
+                            <li>Agrinext logo</li>
+                            <li>Language selector (EN/HI/TE)</li>
+                            <li>Auto-redirect if logged in</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Registration</span>
+                                <span class="nav-link">Login</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Registration Screen</div>
+                        <div class="screen-desc">New user signup with mobile number</div>
+                        <ul class="screen-features">
+                            <li>Mobile number input</li>
+                            <li>Name input</li>
+                            <li>Language selection</li>
+                            <li>Send OTP button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">OTP Verification</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">OTP Verification</div>
+                        <div class="screen-desc">Verify mobile number with OTP</div>
+                        <ul class="screen-features">
+                            <li>6-digit OTP input</li>
+                            <li>Resend OTP option</li>
+                            <li>2-minute timer</li>
+                            <li>Verify button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Profile Setup</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Profile Setup</div>
+                        <div class="screen-desc">Complete farmer profile</div>
+                        <ul class="screen-features">
+                            <li>State selection</li>
+                            <li>District selection</li>
+                            <li>Primary crop selection</li>
+                            <li>Language preference</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Home Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Login Screen</div>
+                        <div class="screen-desc">Existing user login</div>
+                        <ul class="screen-features">
+                            <li>Mobile number input</li>
+                            <li>Send OTP button</li>
+                            <li>Link to registration</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">OTP Verification</span>
+                                <span class="nav-link">Home Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- HOME DASHBOARD -->
+            <div class="flow-section">
+                <h2 class="section-title">2. Home Dashboard (Main Hub)</h2>
+                <div class="screens">
+                    <div class="screen auth">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Home Dashboard</div>
+                        <div class="screen-desc">Central navigation hub for all features</div>
+                        <ul class="screen-features">
+                            <li>Welcome message with farmer name</li>
+                            <li>Weather widget (current temp)</li>
+                            <li>Quick action buttons</li>
+                            <li>Recent activity feed</li>
+                            <li>Bottom navigation bar</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Disease Detection</span>
+                                <span class="nav-link">Ask Advisory</span>
+                                <span class="nav-link">Browse Schemes</span>
+                                <span class="nav-link">Weather</span>
+                                <span class="nav-link">Profile</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- DISEASE DETECTION FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">3. Disease Detection Flow</h2>
+                <div class="screens">
+                    <div class="screen disease">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Disease Detection Home</div>
+                        <div class="screen-desc">Entry point for disease detection</div>
+                        <ul class="screen-features">
+                            <li>Upload image button</li>
+                            <li>Take photo button</li>
+                            <li>Recent detections list</li>
+                            <li>Tips for good photos</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Camera</span>
+                                <span class="nav-link">Gallery</span>
+                                <span class="nav-link">Detection History</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Camera Capture</div>
+                        <div class="screen-desc">Take photo of affected crop</div>
+                        <ul class="screen-features">
+                            <li>Camera viewfinder</li>
+                            <li>Capture button</li>
+                            <li>Flash toggle</li>
+                            <li>Guidelines overlay</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Image Preview</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Image Preview</div>
+                        <div class="screen-desc">Review captured image before analysis</div>
+                        <ul class="screen-features">
+                            <li>Image preview</li>
+                            <li>Retake button</li>
+                            <li>Analyze button</li>
+                            <li>Crop selector (optional)</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Analyzing Screen</span>
+                                <span class="nav-link">Camera (retake)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Analyzing Screen</div>
+                        <div class="screen-desc">Processing image with AI model</div>
+                        <ul class="screen-features">
+                            <li>Loading animation</li>
+                            <li>Progress indicator</li>
+                            <li>"Analyzing..." message</li>
+                            <li>Expected time: 30 seconds</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Detection Results</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Detection Results</div>
+                        <div class="screen-desc">Display disease identification and treatment</div>
+                        <ul class="screen-features">
+                            <li>Disease name (in user language)</li>
+                            <li>Confidence score</li>
+                            <li>Severity level (color-coded)</li>
+                            <li>Treatment recommendations</li>
+                            <li>Save to history button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Treatment Details</span>
+                                <span class="nav-link">Detection History</span>
+                                <span class="nav-link">Home</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Treatment Details</div>
+                        <div class="screen-desc">Detailed treatment information</div>
+                        <ul class="screen-features">
+                            <li>Step-by-step treatment guide</li>
+                            <li>Recommended products</li>
+                            <li>Application method</li>
+                            <li>Dosage information</li>
+                            <li>Preventive measures</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Home</span>
+                                <span class="nav-link">Ask Advisory</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen disease">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Detection History</div>
+                        <div class="screen-desc">View past disease detections</div>
+                        <ul class="screen-features">
+                            <li>List of past detections</li>
+                            <li>Date and crop type</li>
+                            <li>Disease name</li>
+                            <li>Tap to view details</li>
+                            <li>Last 30 days only</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Detection Results</span>
+                                <span class="nav-link">Home</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- ADVISORY FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">4. Advisory Service Flow</h2>
+                <div class="screens">
+                    <div class="screen advisory">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Advisory Home</div>
+                        <div class="screen-desc">Ask farming questions</div>
+                        <ul class="screen-features">
+                            <li>Text input for questions</li>
+                            <li>Suggested questions</li>
+                            <li>Recent queries list</li>
+                            <li>Submit button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Processing</span>
+                                <span class="nav-link">Advisory History</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen advisory">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Processing Query</div>
+                        <div class="screen-desc">AI generating response</div>
+                        <ul class="screen-features">
+                            <li>Loading animation</li>
+                            <li>"Generating advice..." message</li>
+                            <li>Expected time: 1-2 minutes</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Advisory Response</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen advisory">
+                        <div class="priority high">HIGH</div>
+                        <div class="screen-name">Advisory Response</div>
+                        <div class="screen-desc">Display personalized farming advice</div>
+                        <ul class="screen-features">
+                            <li>Question recap</li>
+                            <li>Detailed answer (in user language)</li>
+                            <li>Context-aware (crop, location)</li>
+                            <li>Rating buttons (helpful/not)</li>
+                            <li>Ask follow-up button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Advisory Home</span>
+                                <span class="nav-link">Advisory History</span>
+                                <span class="nav-link">Home</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen advisory">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Advisory History</div>
+                        <div class="screen-desc">View past queries and responses</div>
+                        <ul class="screen-features">
+                            <li>List of past queries</li>
+                            <li>Date and topic</li>
+                            <li>Rating indicator</li>
+                            <li>Tap to view full response</li>
+                            <li>Last 30 entries</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Advisory Response</span>
+                                <span class="nav-link">Home</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- GOVERNMENT SCHEMES FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">5. Government Schemes Flow</h2>
+                <div class="screens">
+                    <div class="screen schemes">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Schemes Browser</div>
+                        <div class="screen-desc">Browse available government schemes</div>
+                        <ul class="screen-features">
+                            <li>Category filters</li>
+                            <li>Search bar</li>
+                            <li>Scheme cards with summary</li>
+                            <li>Eligibility indicator</li>
+                            <li>Deadline badges</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Scheme Details</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen schemes">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Scheme Details</div>
+                        <div class="screen-desc">Detailed scheme information</div>
+                        <ul class="screen-features">
+                            <li>Scheme name and description</li>
+                            <li>Benefits list</li>
+                            <li>Eligibility criteria</li>
+                            <li>Required documents</li>
+                            <li>Application deadline</li>
+                            <li>"Apply Now" button (external link)</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Eligibility Checker</span>
+                                <span class="nav-link">External Website</span>
+                                <span class="nav-link">Schemes Browser</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen schemes">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Eligibility Checker</div>
+                        <div class="screen-desc">Check if farmer is eligible</div>
+                        <ul class="screen-features">
+                            <li>Auto-filled user data</li>
+                            <li>Eligibility result (Yes/No)</li>
+                            <li>Missing criteria highlighted</li>
+                            <li>Next steps guidance</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Scheme Details</span>
+                                <span class="nav-link">External Application</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- WEATHER FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">6. Weather Information Flow</h2>
+                <div class="screens">
+                    <div class="screen weather">
+                        <div class="priority low">LOW</div>
+                        <div class="screen-name">Weather Dashboard</div>
+                        <div class="screen-desc">Current and forecast weather</div>
+                        <ul class="screen-features">
+                            <li>Current temperature</li>
+                            <li>Weather conditions icon</li>
+                            <li>Humidity and rainfall</li>
+                            <li>3-day forecast</li>
+                            <li>Severe weather alerts</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Home</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrows">↓</div>
+            
+            <!-- PROFILE FLOW -->
+            <div class="flow-section">
+                <h2 class="section-title">7. Profile & Settings Flow</h2>
+                <div class="screens">
+                    <div class="screen auth">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Profile View</div>
+                        <div class="screen-desc">View and edit farmer profile</div>
+                        <ul class="screen-features">
+                            <li>Name and mobile number</li>
+                            <li>Location (state, district)</li>
+                            <li>Primary crop</li>
+                            <li>Language preference</li>
+                            <li>Edit button</li>
+                            <li>Logout button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Edit Profile</span>
+                                <span class="nav-link">Login (logout)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="screen auth">
+                        <div class="priority medium">MEDIUM</div>
+                        <div class="screen-name">Edit Profile</div>
+                        <div class="screen-desc">Update profile information</div>
+                        <ul class="screen-features">
+                            <li>Editable name field</li>
+                            <li>State/district dropdowns</li>
+                            <li>Crop selection</li>
+                            <li>Language selector</li>
+                            <li>Save changes button</li>
+                        </ul>
+                        <div class="navigation">
+                            <div class="navigation-title">Navigates to:</div>
+                            <div class="navigation-links">
+                                <span class="nav-link">Profile View</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MVP STATISTICS -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Total Screens</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">User Flows</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Weeks to Build</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add interactivity
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.addEventListener('click', function() {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+        
+        // Add smooth scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.style.background = '#667eea';
+                this.style.color = 'white';
+                setTimeout(() => {
+                    this.style.background = 'white';
+                    this.style.color = '#667eea';
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>

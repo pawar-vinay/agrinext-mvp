@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinext - Phase 1 & 2 Roadmap</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .checklist {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .checklist-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        .checklist-item.completed {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .badge-phase1 { background: #dc3545; color: white; }
+        .badge-phase2 { background: #fd7e14; color: white; }
+        .badge-completed { background: #28a745; color: white; }
+        .badge-pending { background: #ffc107; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Phase 1 & 2 Roadmap</h1>
+            <p>Agrinext MVP Implementation Plan</p>
+        </div>
+        
+        <div class="content">
+            <!-- Timeline -->
+            <div class="section">
+                <h2>Development Timeline</h2>
+                <div class="mermaid">
+gantt
+    title Agrinext MVP - Phase 1 & 2 Timeline
+    dateFormat YYYY-MM-DD
+    section Phase 1: Foundation
+    Database Setup           :done, db, 2026-03-01, 2d
+    Backend Project Setup    :active, be1, after db, 2d
+    Authentication API       :be2, after be1, 3d
+    API Gateway & Middleware :be3, after be2, 2d
+    Mobile App Setup         :mob1, after be1, 2d
+    Auth Screens            :mob2, after mob1, 3d
+    Profile & Dashboard     :mob3, after mob2, 2d
+    
+    section Phase 2: Disease Detection
+    Image Upload API        :dd1, after mob3, 2d
+    AI Integration          :dd2, after dd1, 3d
+    Mobile Disease UI       :dd3, after dd2, 3d
+    History & Results       :dd4, after dd3, 2d
+    
+    section Phase 2: Advisory
+    Advisory API            :adv1, after dd4, 2d
+    LLM Integration         :adv2, after adv1, 3d
+    Mobile Advisory UI      :adv3, after adv2, 3d
+    History & Rating        :adv4, after adv3, 2d
+                </div>
+            </div>
+
+            <!-- Phase 1 Overview -->
+            <div class="section">
+                <h2>Phase 1: Foundation (Week 1-2)</h2>
+                <div class="mermaid">
+graph LR
+    subgraph "Week 1: Backend"
+        DB[Database Setup<br/>✅ COMPLETED]
+        BE[Backend Setup<br/>🔨 IN PROGRESS]
+        AUTH[Authentication API<br/>⏳ PENDING]
+        API[API Gateway<br/>⏳ PENDING]
+    end
+    
+    subgraph "Week 2: Mobile"
+        SETUP[Mobile Setup<br/>⏳ PENDING]
+        SCREENS[Auth Screens<br/>⏳ PENDING]
+        DASH[Dashboard<br/>⏳ PENDING]
+    end
+    
+    DB --> BE
+    BE --> AUTH
+    AUTH --> API
+    API --> SETUP
+    SETUP --> SCREENS
+    SCREENS --> DASH
+    
+    style DB fill:#28a745,color:#fff
+    style BE fill:#ffc107,color:#000
+    style AUTH fill:#e9ecef,color:#000
+    style API fill:#e9ecef,color:#000
+    style SETUP fill:#e9ecef,color:#000
+    style SCREENS fill:#e9ecef,color:#000
+    style DASH fill:#e9ecef,color:#000
+                </div>
+                
+                <div class="checklist">
+                    <h3>Phase 1 Checklist</h3>
+                    <div class="checklist-item completed">
+                        <span class="badge badge-completed">✓</span>
+                        <strong>Database Setup</strong> - PostgreSQL schema, seed data, setup scripts
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>Backend Project</strong> - Node.js, Express, dependencies
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>Authentication API</strong> - OTP, JWT, user registration
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>API Gateway</strong> - Middleware, rate limiting, validation
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>Mobile App Setup</strong> - React Native, navigation
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>Auth Screens</strong> - Login, OTP, Registration
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-pending">⏳</span>
+                        <strong>Dashboard</strong> - Main screen, navigation
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 Overview -->
+            <div class="section">
+                <h2>Phase 2: Core Features (Week 3-6)</h2>
+                <div class="mermaid">
+graph TB
+    subgraph "Week 3-4: Disease Detection"
+        DD1[Image Upload API]
+        DD2[S3 Integration]
+        DD3[AI Model Integration]
+        DD4[Mobile UI]
+        DD5[Results & History]
+    end
+    
+    subgraph "Week 5-6: Advisory Service"
+        ADV1[Advisory API]
+        ADV2[LLM Integration]
+        ADV3[Context Gathering]
+        ADV4[Mobile UI]
+        ADV5[History & Rating]
+    end
+    
+    DD1 --> DD2
+    DD2 --> DD3
+    DD3 --> DD4
+    DD4 --> DD5
+    DD5 --> ADV1
+    ADV1 --> ADV2
+    ADV2 --> ADV3
+    ADV3 --> ADV4
+    ADV4 --> ADV5
+    
+    style DD1 fill:#fd7e14,color:#fff
+    style DD2 fill:#fd7e14,color:#fff
+    style DD3 fill:#fd7e14,color:#fff
+    style DD4 fill:#fd7e14,color:#fff
+    style DD5 fill:#fd7e14,color:#fff
+    style ADV1 fill:#17a2b8,color:#fff
+    style ADV2 fill:#17a2b8,color:#fff
+    style ADV3 fill:#17a2b8,color:#fff
+    style ADV4 fill:#17a2b8,color:#fff
+    style ADV5 fill:#17a2b8,color:#fff
+                </div>
+                
+                <div class="checklist">
+                    <h3>Phase 2 Checklist - Disease Detection</h3>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>Image Upload API</strong> - Multer, file validation
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>AWS S3 Integration</strong> - Image storage, CDN
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>AI Model Integration</strong> - Hugging Face API
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>Mobile Disease UI</strong> - Camera, gallery, upload
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>Results Display</strong> - Disease info, treatment
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 3-4</span>
+                        <strong>Detection History</strong> - List view, details
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Phase 2 Checklist - Advisory Service</h3>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>Advisory API</strong> - Query endpoint, validation
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>OpenAI Integration</strong> - GPT-4 API, prompts
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>Context Gathering</strong> - User profile, location
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>Translation Service</strong> - Google Translate API
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>Mobile Advisory UI</strong> - Query input, response
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase2">Week 5-6</span>
+                        <strong>History & Rating</strong> - List view, rating system
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div class="section">
+                <h2>Technology Stack</h2>
+                <div class="mermaid">
+graph LR
+    subgraph "Backend"
+        NODE[Node.js 18+]
+        EXPRESS[Express.js]
+        PG[PostgreSQL 14+]
+        JWT[JWT Auth]
+    end
+    
+    subgraph "Mobile"
+        RN[React Native]
+        NAV[React Navigation]
+        AXIOS[Axios]
+        ASYNC[AsyncStorage]
+    end
+    
+    subgraph "External Services"
+        TWILIO[Twilio SMS]
+        S3[AWS S3]
+        OPENAI[OpenAI GPT-4]
+        HF[Hugging Face]
+        TRANSLATE[Google Translate]
+    end
+    
+    NODE --> EXPRESS
+    EXPRESS --> PG
+    EXPRESS --> JWT
+    
+    RN --> NAV
+    RN --> AXIOS
+    RN --> ASYNC
+    
+    EXPRESS --> TWILIO
+    EXPRESS --> S3
+    EXPRESS --> OPENAI
+    EXPRESS --> HF
+    EXPRESS --> TRANSLATE
+    
+    AXIOS --> EXPRESS
+    
+    style NODE fill:#68a063,color:#fff
+    style EXPRESS fill:#000,color:#fff
+    style PG fill:#336791,color:#fff
+    style RN fill:#61dafb,color:#000
+                </div>
+            </div>
+
+            <!-- API Endpoints -->
+            <div class="section">
+                <h2>API Endpoints Overview</h2>
+                <div class="mermaid">
+graph TD
+    API[API Gateway<br/>localhost:3000/api/v1]
+    
+    API --> AUTH[/auth/*]
+    API --> USERS[/users/*]
+    API --> DISEASE[/diseases/*]
+    API --> ADVISORY[/advisories/*]
+    
+    AUTH --> AUTH1[POST /send-otp]
+    AUTH --> AUTH2[POST /verify-otp]
+    AUTH --> AUTH3[POST /register]
+    AUTH --> AUTH4[POST /refresh-token]
+    AUTH --> AUTH5[POST /logout]
+    
+    USERS --> USER1[GET /profile]
+    USERS --> USER2[PUT /profile]
+    USERS --> USER3[GET /stats]
+    
+    DISEASE --> DIS1[POST /detect]
+    DISEASE --> DIS2[GET /history]
+    DISEASE --> DIS3[GET /:id]
+    
+    ADVISORY --> ADV1[POST /query]
+    ADVISORY --> ADV2[GET /history]
+    ADVISORY --> ADV3[PUT /:id/rate]
+    
+    style API fill:#667eea,color:#fff
+    style AUTH fill:#dc3545,color:#fff
+    style USERS fill:#28a745,color:#fff
+    style DISEASE fill:#fd7e14,color:#fff
+    style ADVISORY fill:#17a2b8,color:#fff
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="section">
+                <h2>🎯 Next Steps</h2>
+                <div class="checklist">
+                    <div class="checklist-item completed">
+                        <span class="badge badge-completed">✓ DONE</span>
+                        <strong>Step 1:</strong> Database setup completed
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase1">NEXT</span>
+                        <strong>Step 2:</strong> Install backend dependencies
+                        <pre style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">cd backend
+npm install</pre>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase1">NEXT</span>
+                        <strong>Step 3:</strong> Configure environment variables
+                        <pre style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">copy .env.example .env
+notepad .env</pre>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase1">NEXT</span>
+                        <strong>Step 4:</strong> Start backend server
+                        <pre style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">npm run dev</pre>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="badge badge-phase1">NEXT</span>
+                        <strong>Step 5:</strong> Create authentication API endpoints
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default'
+        });
+    </script>
+</body>
+</html>

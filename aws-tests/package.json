@@ -1,0 +1,18 @@
+{
+  "name": "aws-connection-tests",
+  "version": "1.0.0",
+  "description": "AWS Connection Test Scripts for Agrinext",
+  "main": "test-connection.js",
+  "scripts": {
+    "test": "node test-connection.js",
+    "test:quick": "node quick-test.js",
+    "test:s3": "node test-s3-upload.js"
+  },
+  "keywords": ["aws", "test", "connection"],
+  "author": "Agrinext Team",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1506.0",
+    "dotenv": "^16.3.1"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "navigation": {
+    "dashboard": "డాష్‌బోర్డ్",
+    "detection": "వ్యాధి గుర్తింపు",
+    "advisory": "సలహా",
+    "schemes": "పథకాలు",
+    "profile": "ప్రొఫైల్"
+  },
+  "auth": {
+    "login": "లాగిన్",
+    "enterMobile": "మొబైల్ నంబర్ నమోదు చేయండి",
+    "sendOTP": "OTP పంపండి",
+    "verifyOTP": "OTP ధృవీకరించండి",
+    "enterOTP": "OTP నమోదు చేయండి",
+    "verify": "ధృవీకరించండి",
+    "register": "నమోదు",
+    "name": "పేరు",
+    "location": "స్థానం",
+    "primaryCrop": "ప్రధాన పంట",
+    "language": "భాష",
+    "submit": "సమర్పించండి",
+    "logout": "లాగ్అవుట్"
+  },
+  "detection": {
+    "title": "వ్యాధి గుర్తింపు",
+    "takePhoto": "ఫోటో తీయండి",
+    "selectFromGallery": "గ్యాలరీ నుండి ఎంచుకోండి",
+    "detecting": "వ్యాధిని గుర్తిస్తోంది...",
+    "result": "గుర్తింపు ఫలితం",
+    "disease": "వ్యాధి",
+    "severity": "తీవ్రత",
+    "confidence": "విశ్వాసం",
+    "recommendations": "సిఫార్సులు",
+    "history": "గుర్తింపు చరిత్ర",
+    "noHistory": "గుర్తింపు చరిత్ర లేదు"
+  },
+  "advisory": {
+    "title": "వ్యవసాయ సలహా",
+    "askQuestion": "ప్రశ్న అడగండి",
+    "enterQuestion": "మీ వ్యవసాయ ప్రశ్నను నమోదు చేయండి",
+    "submit": "సమర్పించండి",
+    "loading": "సలహా పొందుతోంది...",
+    "response": "సమాధానం",
+    "rate": "ఈ సలహాను రేట్ చేయండి",
+    "history": "సలహా చరిత్ర",
+    "noHistory": "సలహా చరిత్ర లేదు"
+  },
+  "schemes": {
+    "title": "ప్రభుత్వ పథకాలు",
+    "category": "వర్గం",
+    "search": "పథకాలను శోధించండి",
+    "eligibility": "అర్హత",
+    "benefits": "ప్రయోజనాలు",
+    "applicationProcess": "దరఖాస్తు ప్రక్రియ",
+    "contact": "సంప్రదింపు సమాచారం",
+    "noSchemes": "పథకాలు కనుగొనబడలేదు"
+  },
+  "profile": {
+    "title": "ప్రొఫైల్",
+    "edit": "ప్రొఫైల్ సవరించండి",
+    "save": "సేవ్ చేయండి",
+    "cancel": "రద్దు చేయండి",
+    "mobileNumber": "మొబైల్ నంబర్",
+    "name": "పేరు",
+    "location": "స్థానం",
+    "primaryCrop": "ప్రధాన పంట",
+    "language": "భాష",
+    "appLanguage": "యాప్ భాష",
+    "readOnly": "చదవడానికి మాత్రమే"
+  },
+  "common": {
+    "loading": "లోడ్ అవుతోంది...",
+    "error": "లోపం",
+    "retry": "మళ్లీ ప్రయత్నించండి",
+    "cancel": "రద్దు చేయండి",
+    "save": "సేవ్ చేయండి",
+    "delete": "తొలగించండి",
+    "confirm": "నిర్ధారించండి",
+    "yes": "అవును",
+    "no": "కాదు",
+    "ok": "సరే",
+    "offline": "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు",
+    "noInternet": "ఇంటర్నెట్ కనెక్షన్ లేదు",
+    "hello": "నమస్కారం"
+  },
+  "dashboard": {
+    "subtitle": "మీరు ఈరోజు ఏమి చేయాలనుకుంటున్నారు?"
+  },
+  "offline": {
+    "indicator": "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు। కొన్ని ఫీచర్లు పరిమితం కావచ్చు।",
+    "cachedData": "కాష్ చేసిన డేటా చూపబడుతోంది",
+    "queuedRequest": "ఆన్‌లైన్ అయినప్పుడు సింక్ కోసం అభ్యర్థన క్యూ చేయబడింది",
+    "syncInProgress": "క్యూ చేసిన అభ్యర్థనలను సింక్ చేస్తోంది...",
+    "syncComplete": "సింక్ పూర్తయింది",
+    "featureDisabled": "ఈ ఫీచర్‌కు ఇంటర్నెట్ కనెక్షన్ అవసరం"
+  },
+  "errors": {
+    "invalidMobile": "చెల్లని మొబైల్ నంబర్",
+    "invalidOTP": "చెల్లని OTP",
+    "networkError": "నెట్‌వర్క్ లోపం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    "serverError": "సర్వర్ లోపం. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.",
+    "unknownError": "తెలియని లోపం సంభవించింది",
+    "nameRequired": "పేరు అవసరం",
+    "locationRequired": "స్థానం అవసరం",
+    "primaryCropRequired": "ప్రధాన పంట అవసరం",
+    "updateProfileFailed": "ప్రొఫైల్ నవీకరించడం విఫలమైంది"
+  }
+}

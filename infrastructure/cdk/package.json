@@ -1,0 +1,23 @@
+{
+  "name": "agrinext-infrastructure",
+  "version": "1.0.0",
+  "description": "AWS CDK infrastructure for Agrinext MVP",
+  "main": "app.js",
+  "scripts": {
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy --all",
+    "destroy": "cdk destroy --all",
+    "diff": "cdk diff"
+  },
+  "keywords": ["aws", "cdk", "infrastructure"],
+  "author": "Agrinext Team",
+  "license": "MIT",
+  "dependencies": {
+    "aws-cdk-lib": "^2.114.1",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.114.1"
+  }
+}

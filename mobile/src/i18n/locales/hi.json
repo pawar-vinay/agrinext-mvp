@@ -1,0 +1,108 @@
+{
+  "navigation": {
+    "dashboard": "डैशबोर्ड",
+    "detection": "रोग पहचान",
+    "advisory": "सलाह",
+    "schemes": "योजनाएं",
+    "profile": "प्रोफ़ाइल"
+  },
+  "auth": {
+    "login": "लॉगिन",
+    "enterMobile": "मोबाइल नंबर दर्ज करें",
+    "sendOTP": "OTP भेजें",
+    "verifyOTP": "OTP सत्यापित करें",
+    "enterOTP": "OTP दर्ज करें",
+    "verify": "सत्यापित करें",
+    "register": "पंजीकरण",
+    "name": "नाम",
+    "location": "स्थान",
+    "primaryCrop": "मुख्य फसल",
+    "language": "भाषा",
+    "submit": "जमा करें",
+    "logout": "लॉगआउट"
+  },
+  "detection": {
+    "title": "रोग पहचान",
+    "takePhoto": "फोटो लें",
+    "selectFromGallery": "गैलरी से चुनें",
+    "detecting": "रोग की पहचान हो रही है...",
+    "result": "पहचान परिणाम",
+    "disease": "रोग",
+    "severity": "गंभीरता",
+    "confidence": "विश्वास",
+    "recommendations": "सिफारिशें",
+    "history": "पहचान इतिहास",
+    "noHistory": "कोई पहचान इतिहास नहीं"
+  },
+  "advisory": {
+    "title": "कृषि सलाह",
+    "askQuestion": "प्रश्न पूछें",
+    "enterQuestion": "अपना कृषि प्रश्न दर्ज करें",
+    "submit": "जमा करें",
+    "loading": "सलाह प्राप्त हो रही है...",
+    "response": "उत्तर",
+    "rate": "इस सलाह को रेट करें",
+    "history": "सलाह इतिहास",
+    "noHistory": "कोई सलाह इतिहास नहीं"
+  },
+  "schemes": {
+    "title": "सरकारी योजनाएं",
+    "category": "श्रेणी",
+    "search": "योजनाएं खोजें",
+    "eligibility": "पात्रता",
+    "benefits": "लाभ",
+    "applicationProcess": "आवेदन प्रक्रिया",
+    "contact": "संपर्क जानकारी",
+    "noSchemes": "कोई योजना नहीं मिली"
+  },
+  "profile": {
+    "title": "प्रोफ़ाइल",
+    "edit": "प्रोफ़ाइल संपादित करें",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "mobileNumber": "मोबाइल नंबर",
+    "name": "नाम",
+    "location": "स्थान",
+    "primaryCrop": "मुख्य फसल",
+    "language": "भाषा",
+    "appLanguage": "ऐप भाषा",
+    "readOnly": "केवल पढ़ने के लिए"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "retry": "पुनः प्रयास करें",
+    "cancel": "रद्द करें",
+    "save": "सहेजें",
+    "delete": "हटाएं",
+    "confirm": "पुष्टि करें",
+    "yes": "हां",
+    "no": "नहीं",
+    "ok": "ठीक है",
+    "offline": "आप ऑफ़लाइन हैं",
+    "noInternet": "इंटरनेट कनेक्शन नहीं है",
+    "hello": "नमस्ते"
+  },
+  "dashboard": {
+    "subtitle": "आज आप क्या करना चाहेंगे?"
+  },
+  "offline": {
+    "indicator": "आप ऑफ़लाइन हैं। कुछ सुविधाएं सीमित हो सकती हैं।",
+    "cachedData": "कैश्ड डेटा दिखाया जा रहा है",
+    "queuedRequest": "ऑनलाइन होने पर सिंक के लिए अनुरोध कतारबद्ध",
+    "syncInProgress": "कतारबद्ध अनुरोधों को सिंक किया जा रहा है...",
+    "syncComplete": "सिंक पूर्ण",
+    "featureDisabled": "इस सुविधा के लिए इंटरनेट कनेक्शन आवश्यक है"
+  },
+  "errors": {
+    "invalidMobile": "अमान्य मोबाइल नंबर",
+    "invalidOTP": "अमान्य OTP",
+    "networkError": "नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।",
+    "serverError": "सर्वर त्रुटि। कृपया बाद में पुनः प्रयास करें।",
+    "unknownError": "एक अज्ञात त्रुटि हुई",
+    "nameRequired": "नाम आवश्यक है",
+    "locationRequired": "स्थान आवश्यक है",
+    "primaryCropRequired": "मुख्य फसल आवश्यक है",
+    "updateProfileFailed": "प्रोफ़ाइल अपडेट करने में विफल"
+  }
+}
